@@ -18,21 +18,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class LocalCodeCoverageListener implements EventSubscriberInterface
 {
     /**
-     * @var string
-     */
-    private $phpunitXmlPath;
-
-    /**
-     * @var string
-     */
-    private $targetDirectory;
-
-    /**
-     * @var string
-     */
-    private $splitBy = 'suite';
-
-    /**
      * @var bool
      */
     private $coverageEnabled = false;
@@ -42,11 +27,13 @@ final class LocalCodeCoverageListener implements EventSubscriberInterface
      */
     private $coverage;
 
-    public function __construct($phpunitXmlPath, $targetDirectory, $splitBy)
+    /**
+     * @param string $phpunitXmlPath
+     * @param string $targetDirectory
+     * @param string $splitBy
+     */
+    public function __construct(private $phpunitXmlPath, private $targetDirectory, private $splitBy)
     {
-        $this->targetDirectory = $targetDirectory;
-        $this->phpunitXmlPath = $phpunitXmlPath;
-        $this->splitBy = $splitBy;
     }
 
     public static function getSubscribedEvents()
@@ -104,7 +91,7 @@ final class LocalCodeCoverageListener implements EventSubscriberInterface
             return;
         }
 
-        $parts = pathinfo($event->getFeature()->getFile());
+        $parts = pathinfo((string) $event->getFeature()->getFile());
         Storage::storeCodeCoverage($this->coverage, $this->targetDirectory, sprintf('%s-%s', basename($parts['dirname']), $parts['filename']));
     }
 
