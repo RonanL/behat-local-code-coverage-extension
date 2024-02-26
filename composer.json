@@ -4,7 +4,7 @@
     "require": {
         "php": "^8.3",
         "behat/behat": "^3.13",
-        "matthiasnoback/live-code-coverage": "dev-php83"
+        "matthiasnoback/live-code-coverage": "dev-php83|dev-php83-phpunit11"
     },
     "autoload": {
         "psr-4": {
